@@ -57,8 +57,8 @@ jobs:
       uses  : sigstore/cosign-installer@main
       #run: |
       #  curl -LO https://github.com/sigstore/cosign/releases/download/v2.0.0/cosign-linux-amd64
-       # chmod +x cosign-linux-amd64
-       # sudo mv cosign-linux-amd64 /usr/local/bin/cosign
+      # chmod +x cosign-linux-amd64
+      # sudo mv cosign-linux-amd64 /usr/local/bin/cosign
 
     - name: Sign Docker image
       run: cosign sign --key env://COSIGN_KEY --yes ${{ secrets.DOCKER_USERNAME }}/go-hello-world:latest
@@ -74,6 +74,12 @@ jobs:
         docker pull ${{ secrets.DOCKER_USERNAME }}/go-hello-world:latest
         cosign verify --key cosign.pub ${{ secrets.DOCKER_USERNAME }}/go-hello-world:latest
     
+    - name: Install Trivy
+      uses: aquasecurity/trivy-action@0.20.0
+      #run: |
+      #   curl -sSL https://github.com/aquasecurity/trivy/releases/download/v0.45.5/trivy_0.36.1_Linux-64bit.deb -o trivy.deb
+      #   sudo dpkg -i trivy.deb
+
     - name: Scan Docker image with Trivy
       run: | 
         trivy image --exit-code 1 --no-progress ${{ secrets.DOCKER_USERNAME }}/go-hello-world:latest
