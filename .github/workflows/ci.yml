@@ -48,7 +48,7 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
       with:
-        context: .
+        context: ./hello-world
         file: ./hello-world/Dockerfile
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/hello-world-server:latest
