@@ -60,4 +60,4 @@ jobs:
         sudo mv cosign-linux-amd64 /usr/local/bin/cosign
 
     - name: Sign Docker image
-      run: cosign sign --key ${{ secrets.COSIGN_PRIVATE_KEY }} ${{ secrets.DOCKER_USERNAME }}/hello-world-server:latest
+      run: echo "${{ secrets.COSIGN_PRIVATE_KEY }}" | cosign sign --key - ${{ secrets.DOCKER_USERNAME }}/hello-world-server:latest
