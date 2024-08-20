@@ -61,7 +61,7 @@ jobs:
        # sudo mv cosign-linux-amd64 /usr/local/bin/cosign
 
     - name: Sign Docker image
-      run: cosign sign --key env://COSIGN_KEY ${{ secrets.DOCKER_USERNAME }}/hello-world-server:latest
+      run: cosign sign --key env://COSIGN_KEY --yes ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
       shell: bash
       env:
         COSIGN_KEY: ${{secrets.COSIGN_KEY}}
