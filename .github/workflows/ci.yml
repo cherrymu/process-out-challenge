@@ -54,10 +54,11 @@ jobs:
         tags: ${{ secrets.DOCKER_USERNAME }}/hello-world-server:latest
 
     - name: Install Cosign (Container Signing Tool)
-      run: |
-        curl -LO https://github.com/sigstore/cosign/releases/download/v2.0.0/cosign-linux-amd64
-        chmod +x cosign-linux-amd64
-        sudo mv cosign-linux-amd64 /usr/local/bin/cosign
+      uses  : sigstore/cosign-installer@main
+      #run: |
+      #  curl -LO https://github.com/sigstore/cosign/releases/download/v2.0.0/cosign-linux-amd64
+       # chmod +x cosign-linux-amd64
+       # sudo mv cosign-linux-amd64 /usr/local/bin/cosign
 
     - name: Sign Docker image
       run: cosign sign --key env://COSIGN_KEY ${{ secrets.DOCKER_USERNAME }}/hello-world-server:latest
