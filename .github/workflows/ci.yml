@@ -51,7 +51,7 @@ jobs:
         context: ./hello-world
         file: ./hello-world/Dockerfile
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/hello-world-server:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
 
     - name: Install Cosign (Container Signing Tool)
       uses  : sigstore/cosign-installer@main
