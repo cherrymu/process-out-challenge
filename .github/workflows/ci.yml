@@ -51,7 +51,7 @@ jobs:
         context: ./hello-world
         file: ./hello-world/Dockerfile
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/go-hello-world:latest
 
     - name: Install Cosign (Container Signing Tool)
       uses  : sigstore/cosign-installer@main
@@ -61,7 +61,7 @@ jobs:
        # sudo mv cosign-linux-amd64 /usr/local/bin/cosign
 
     - name: Sign Docker image
-      run: cosign sign --key env://COSIGN_KEY --yes ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+      run: cosign sign --key env://COSIGN_KEY --yes ${{ secrets.DOCKER_USERNAME }}/go-hello-world:latest
       shell: bash
       env:
         COSIGN_KEY: ${{secrets.COSIGN_KEY}}
