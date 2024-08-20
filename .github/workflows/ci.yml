@@ -30,9 +30,11 @@ jobs:
 
     - name: Build the application
       run: go build -v ./...
+      working-directory: ./hello-world/
 
     - name: Run unit tests
       run: go test -v ./...
+      working-directory: ./hello-world/
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
@@ -47,7 +49,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: .
-        file: Dockerfile
+        file: ./hello-world/Dockerfile
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/hello-world-server:latest
 
