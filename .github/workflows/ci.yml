@@ -67,3 +67,10 @@ jobs:
         COSIGN_KEY: ${{secrets.COSIGN_KEY}}
         COSIGN_PASSWORD: ${{secrets.COSIGN_PASSWORD}}
 
+    
+    - name: Check images
+      run: |
+        docker buildx imagetools inspect ${{ secrets.DOCKER_USERNAME }}/go-hello-world:latest
+        docker pull ${{ secrets.DOCKER_USERNAME }}/go-hello-world:latest
+        cosign verify --key cosign.pub ${{ secrets.DOCKER_USERNAME }}/go-hello-world:latest
+
