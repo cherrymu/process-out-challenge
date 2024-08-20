@@ -75,10 +75,17 @@ jobs:
         cosign verify --key cosign.pub ${{ secrets.DOCKER_USERNAME }}/go-hello-world:latest
     
     - name: Install Trivy
-      #uses: aquasecurity/trivy-action@0.20.0
-      run: |
-        curl -sSL https://github.com/aquasecurity/trivy/releases/download/v0.45.5/trivy_0.36.1_Linux-64bit.deb -o trivy.deb
-        sudo dpkg -i trivy.deb
+      uses: aquasecurity/trivy-action@0.20.0
+      with:
+        image-ref: 'docker.io/${{ secrets.DOCKER_USERNAME }}/go-hello-world:latest'
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL,HIGH'
+      #run: |
+      #  curl -sSL https://github.com/aquasecurity/trivy/releases/download/v0.45.5/trivy_0.36.1_Linux-64bit.deb -o trivy.deb
+      #  sudo dpkg -i trivy.deb
 
     - name: Scan Docker image with Trivy
       run: | 
