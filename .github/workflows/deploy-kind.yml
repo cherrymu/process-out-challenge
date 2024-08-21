@@ -36,21 +36,19 @@ jobs:
           tofu --version
 
       # Step 5: Set working dir
-      - name: Set working directory
-        run: cd ./enviroments/local-dev/
+      #- name: Set working directory
+      #  run: cd ./enviroments/local-dev/
 
       # Step 6: Initialize OpenTofu
       - name: Initialize OpenTofu
         run: |
           cd ./enviroments/local-dev/
-        working-directory: ./enviroments/local-dev/
           tofu init
 
       # Step 7: Apply OpenTofu Configuration to Create Kind Cluster
       - name: Apply OpenTofu
         run: |
           cd ./enviroments/local-dev/
-        working-directory: ./enviroments/local-dev/
           tofu apply -auto-approve
 
       # Step 8: Check for kind nodes 
@@ -79,5 +77,4 @@ jobs:
         if: always()
         run: |
           cd ./enviroments/local-dev/
-        working-directory: ./enviroments/local-dev/
           tofu destroy -auto-approve
