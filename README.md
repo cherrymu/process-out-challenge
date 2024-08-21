@@ -83,7 +83,8 @@ tofu destroy
 - [x] Usage of infrastructure-as-code tool (OpenTofu) to provision local KIND cluster
 - [x] Security scanners implementation using Trivy during the build process 
 
-
+## Assumptions
+After building the application from the CI pipeline, deploy it manually using helm on any k8s distribution
 
 ## Project Highlights/Features
 1. Modular Golang code with Separate HTTP handlers and telemetry into different files for better organization and error handling.
