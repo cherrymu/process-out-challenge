@@ -1,10 +1,10 @@
 name: Test app Deployment with Kind
 
 on:
+  workflow_dispatch:
   workflow_run:
-    workflows: ["CI Pipeline"]
-    types:
-      - completed
+    workflows: ['CI Pipeline']
+    types: [completed]
 
 jobs:
   test-deployment:
@@ -39,14 +39,12 @@ jobs:
       - name: Initialize OpenTofu
         run: |
           cd ./environments/local-dev/
-          working-directory: ./environments/local-dev/
           tofu init
 
       # Step 6: Apply OpenTofu Configuration to Create Kind Cluster
       - name: Apply OpenTofu
         run: |
           cd ./environments/local-dev/
-          working-directory: ./environments/local-dev/
           tofu apply -auto-approve
 
       # Step 7: Deploy Sample Application to Kind Cluster
@@ -70,5 +68,4 @@ jobs:
         if: always()
         run: |
           cd ./environments/local-dev/
-          working-directory: ./environments/local-dev/
           tofu destroy -auto-approve
