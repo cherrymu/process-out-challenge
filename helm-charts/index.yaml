@@ -1,0 +1,15 @@
+apiVersion: v1
+entries:
+  go-simple-web-server:
+  - apiVersion: v2
+    appVersion: "1.0"
+    created: "2024-08-21T16:27:34.65841048+01:00"
+    description: A Helm chart for deploying a go web app server from a private container
+      registry
+    digest: 412881c71791b175b4d11d0e56d76adf2d59bc41728f7a485ba9b17cc6cb1a62
+    name: go-simple-web-server
+    type: application
+    urls:
+    - https://cherrymu.github.io/process-out-challenge/go-simple-web-server-1.0.tgz
+    version: "1.0"
+generated: "2024-08-21T16:27:34.657940808+01:00"
