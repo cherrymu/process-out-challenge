@@ -10,6 +10,6 @@ entries:
     name: go-simple-web-server
     type: application
     urls:
-    - https://cherrymu.github.io/process-out-challenge/go-simple-web-server-1.0.tgz
+    - go-simple-web-server-1.0.tgz
     version: "1.0"
 generated: "2024-08-21T18:06:24.003691588+01:00"
