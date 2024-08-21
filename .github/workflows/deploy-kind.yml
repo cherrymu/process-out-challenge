@@ -61,7 +61,7 @@ jobs:
       # Step 8: Check for kind nodes 
       - name: Check for kind nodes 
         run: |
-          export KUBECONFIG=$(pwd)/kubeconfig_example
+          export KUBECONFIG=./kubeconfig_example
           kubectl get nodes -o wide 
 
       # Step 9: Deploy Sample Application to Kind Cluster
