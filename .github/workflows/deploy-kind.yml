@@ -57,6 +57,10 @@ jobs:
         run: |
           cd ./enviroments/local-dev/
           tofu apply -auto-approve
+       
+      - name: Sleep for 180 seconds 
+        run: |
+          sleep 180s
 
       # Step 8: Check for kind nodes 
       - name: Check for kind nodes 
@@ -67,7 +71,8 @@ jobs:
       # Step 9: Deploy Sample Application to Kind Cluster
       - name: Deploy Application
         run: |
-          kubectl apply -f ./environments/local-dev/deployment-test.yaml
+          cd ./enviroments/local-dev/
+          kubectl apply -f deployment-test.yaml
 
       # Step 10: Wait for Pods to Be Ready
       - name: Wait for Pods
