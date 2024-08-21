@@ -37,12 +37,12 @@ jobs:
 
       # Step 5: Set working dir
       - name: Set working directory
-        run: cd /enviroments/local-dev/
+        run: cd ./enviroments/local-dev/
 
       # Step 6: Initialize OpenTofu
       - name: Initialize OpenTofu
         run: |
-          cd enviroments/local-dev/
+          cd ./enviroments/local-dev/
           working-directory: ./enviroments/local-dev/
           tofu init
 
