@@ -67,7 +67,7 @@ jobs:
       # Step 9: Deploy Sample Application to Kind Cluster
       - name: Deploy Application
         run: |
-          kubectl apply -f ../../environments/local-dev/deployment-test.yaml
+          kubectl apply -f ./environments/local-dev/deployment-test.yaml
 
       # Step 10: Wait for Pods to Be Ready
       - name: Wait for Pods
