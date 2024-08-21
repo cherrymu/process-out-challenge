@@ -1,10 +1,10 @@
-name: Test appn Deployment with Kind
+name: Test app Deployment with Kind
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types:
+      - completed
 
 jobs:
   test-deployment:
@@ -38,15 +38,15 @@ jobs:
       # Step 5: Initialize OpenTofu
       - name: Initialize OpenTofu
         run: |
-          working-directory: ./environments/local-dev/
           cd ./environments/local-dev/
+          working-directory: ./environments/local-dev/
           tofu init
 
       # Step 6: Apply OpenTofu Configuration to Create Kind Cluster
       - name: Apply OpenTofu
         run: |
-          working-directory: ./environments/local-dev/
           cd ./environments/local-dev/
+          working-directory: ./environments/local-dev/
           tofu apply -auto-approve
 
       # Step 7: Deploy Sample Application to Kind Cluster
@@ -69,6 +69,6 @@ jobs:
       - name: Destroy Kind Cluster
         if: always()
         run: |
-          working-directory: ./environments/local-dev/
           cd ./environments/local-dev/
+          working-directory: ./environments/local-dev/
           tofu destroy -auto-approve
