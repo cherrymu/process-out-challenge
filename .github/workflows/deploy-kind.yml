@@ -37,7 +37,8 @@ jobs:
 
       # Set working dir
       - name: Set working directory
-        run: cd enviroments/local-dev/
+        run: |
+          cd ./enviroments/local-dev/
 
       # Step 5: Initialize OpenTofu
       - name: Initialize OpenTofu
@@ -48,11 +49,11 @@ jobs:
       # Step 6: Apply OpenTofu Configuration to Create Kind Cluster
       - name: Apply OpenTofu
         run: |
-          cd enviroments/local-dev/
+          cd ./enviroments/local-dev/
           tofu apply -auto-approve
 
       # Step 7: Check for kind nodes 
-      - name: 
+      - name: Check for kind nodes 
         run: |
           kubectl get nodes -o wide 
 
@@ -76,5 +77,5 @@ jobs:
       - name: Destroy Kind Cluster
         if: always()
         run: |
-          cd enviroments/local-dev/
+          cd ./enviroments/local-dev/
           tofu destroy -auto-approve
