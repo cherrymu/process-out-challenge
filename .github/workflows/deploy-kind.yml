@@ -37,42 +37,44 @@ jobs:
 
       # Set working dir
       - name: Set working directory
-        run: cd .../../enviroments/local-dev/
+        run: cd enviroments/local-dev/
 
       # Step 5: Initialize OpenTofu
       - name: Initialize OpenTofu
         run: |
-          cd ../../enviroments/local-dev/
-          working-directory: ../../enviroments/local-dev/
+          cd enviroments/local-dev/
           tofu init
 
       # Step 6: Apply OpenTofu Configuration to Create Kind Cluster
       - name: Apply OpenTofu
         run: |
-          cd ../../enviroments/local-dev/
-          working-directory: ../../enviroments/local-dev/
+          cd enviroments/local-dev/
           tofu apply -auto-approve
 
-      # Step 7: Deploy Sample Application to Kind Cluster
+      # Step 7: Check for kind nodes 
+      - name: 
+        run: |
+          kubectl get nodes -o wide 
+
+      # Step 8: Deploy Sample Application to Kind Cluster
       - name: Deploy Application
         run: |
           kubectl apply -f ../../environments/local-dev/deployment-test.yaml
 
-      # Step 8: Wait for Pods to Be Ready
+      # Step 9: Wait for Pods to Be Ready
       - name: Wait for Pods
         run: |
           kubectl rollout status deployment/go-http-server
 
-      # Step 9: Run Tests
+      # Step 10: Run Tests
       - name: Test Application Deployment
         run: |
           kubectl get pods -l app=webserver
           kubectl get deployments
 
-      # Step 10: Destroy the Kind Cluster
+      # Step 11: Destroy the Kind Cluster
       - name: Destroy Kind Cluster
         if: always()
         run: |
-          cd ../../enviroments/local-dev/
-          working-directory: ../../enviroments/local-dev/
+          cd enviroments/local-dev/
           tofu destroy -auto-approve
