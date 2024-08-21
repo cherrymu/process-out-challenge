@@ -1,0 +1,95 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: 1.22
+
+    - name: Set working directory
+      run: cd ./hello-world/
+
+    - name: Install dependencies
+      run: go mod tidy
+      working-directory: ./hello-world/
+
+    - name: Build the application
+      run: go build -v ./...
+      working-directory: ./hello-world/
+
+    - name: Run unit tests
+      run: go test -v ./...
+      working-directory: ./hello-world/
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./hello-world
+        file: ./hello-world/Dockerfile
+        push: false
+        tags: ${{ secrets.DOCKER_USERNAME }}/go-hello-world:latest
+
+    - name: Install Cosign (Container Signing Tool)
+      uses  : sigstore/cosign-installer@main
+      #run: |
+      #  curl -LO https://github.com/sigstore/cosign/releases/download/v2.0.0/cosign-linux-amd64
+      # chmod +x cosign-linux-amd64
+      # sudo mv cosign-linux-amd64 /usr/local/bin/cosign
+
+    - name: Sign Docker image
+      run: cosign sign --key env://COSIGN_KEY --yes ${{ secrets.DOCKER_USERNAME }}/go-hello-world:latest
+      shell: bash
+      env:
+        COSIGN_KEY: ${{secrets.COSIGN_KEY}}
+        COSIGN_PASSWORD: ${{secrets.COSIGN_PASSWORD}}
+
+    
+    - name: Check images
+      run: |
+        docker buildx imagetools inspect ${{ secrets.DOCKER_USERNAME }}/go-hello-world:latest
+        docker pull ${{ secrets.DOCKER_USERNAME }}/go-hello-world:latest
+        cosign verify --key cosign.pub ${{ secrets.DOCKER_USERNAME }}/go-hello-world:latest
+    
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@0.20.0
+      with:
+        image-ref: 'docker.io/${{ secrets.DOCKER_USERNAME }}/go-hello-world:latest'
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL,HIGH'
+      #run: |
+      #  curl -sSL https://github.com/aquasecurity/trivy/releases/download/v0.45.5/trivy_0.36.1_Linux-64bit.deb -o trivy.deb
+      #  sudo dpkg -i trivy.deb
+
+    - name: Push Docker image to repo
+      if: success()  # Push the image only if the scan passes
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/go-hello-world:latest
+    
+

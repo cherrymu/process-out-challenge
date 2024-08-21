@@ -1,0 +1,71 @@
+name: Test app Deployment with Kind
+
+on:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types:
+      - completed 
+
+jobs:
+  test-deployment:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Install Docker
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v3
+
+      # Step 3: Install Kind
+      - name: Install Kind
+        run: |
+          curl -Lo ./kind https://kind.sigs.k8s.io/dl/latest/kind-linux-amd64
+          chmod +x ./kind
+          sudo mv ./kind /usr/local/bin/kind
+
+      # Step 4: Install OpenTofu
+      - name: Install OpenTofu
+        run: |
+          wget https://github.com/opentofu/opentofu/releases/download/v1.8.1/tofu_1.8.1_linux_amd64.tar.gz
+          tar -xvf tofu_1.8.1_linux_amd64.tar.gz 
+          chmod +x tofu
+          sudo mv tofu /usr/local/bin/tofu
+          tofu --version
+
+      # Step 5: Initialize OpenTofu
+      - name: Initialize OpenTofu
+        run: |
+          cd ./environments/local-dev/
+          tofu init
+
+      # Step 6: Apply OpenTofu Configuration to Create Kind Cluster
+      - name: Apply OpenTofu
+        run: |
+          cd ./environments/local-dev/
+          tofu apply -auto-approve
+
+      # Step 7: Deploy Sample Application to Kind Cluster
+      - name: Deploy Application
+        run: |
+          kubectl apply -f ./environments/local-dev/deployment-test.yaml
+
+      # Step 8: Wait for Pods to Be Ready
+      - name: Wait for Pods
+        run: |
+          kubectl rollout status deployment/go-http-server
+
+      # Step 9: Run Tests
+      - name: Test Application Deployment
+        run: |
+          kubectl get pods -l app=webserver
+          kubectl get deployments
+
+      # Step 10: Destroy the Kind Cluster
+      - name: Destroy Kind Cluster
+        if: always()
+        run: |
+          cd ./environments/local-dev/
+          tofu destroy -auto-approve
