@@ -75,7 +75,7 @@ tofu destroy
 
 ## Things Covered 
 - [x] Create a golang application listening on port 8080 with open telemetry metrics
-- [x] Application built in a secure CI pipeline using github actions
+- [x] Application built in a secure CI pipeline using github actions and test the release using CD process.
 - [x] Packaged into a Docker container and push it to a container registry
 - [x] Deployed on to a local kind cluster
 - [x] Used private cloud container registry
@@ -84,7 +84,7 @@ tofu destroy
 - [x] Security scanners implementation using Trivy during the build process 
 
 ## Assumptions
-After building the application from the CI pipeline, deploy it manually using helm on any k8s distribution
+After building the application from the CI pipeline, deploy it manually using helm on any k8s distribution. However, also written a github workflow to do a continous test of the latest image built using OpenTofu on a local kind cluster running in the workflow job.
 
 ## Project Highlights/Features
 1. Modular Golang code with Separate HTTP handlers and telemetry into different files for better organization and error handling.
