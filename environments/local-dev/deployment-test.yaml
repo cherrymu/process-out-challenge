@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: webserver
-        image: tincher/go-hello-world:latest
+        image: tincher/hello-world-server:latest
         ports:
         - containerPort: 8080
 
