@@ -6,7 +6,7 @@ CLUSTER_NAME="test-cluster"
 
 create_cluster() {
   kind create cluster --name "${CLUSTER_NAME}" --config kind-config.yaml
-  kind get kubeconfig --name "${CLUSTER_NAME}" > /home/cherry/.kube/ki
+  kind get kubeconfig --name "${CLUSTER_NAME}" > ./kubeconfig_example
 }
 
 delete_cluster() {

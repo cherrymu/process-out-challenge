@@ -16,5 +16,5 @@ resource "null_resource" "kind_cluster" {
 }
 
 output "kubeconfig_path" {
-  value = "${path.module}kube/"
+  value = "${path.module}/kubeconfig_example"
 }

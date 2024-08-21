@@ -45,6 +45,13 @@ jobs:
           cd ./enviroments/local-dev/
           tofu init
 
+     # Step 7: Install kubectl 
+      - name: Set up kubectl
+        run: |
+         curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+         chmod +x kubectl
+         sudo mv kubectl /usr/local/bin/
+
       # Step 7: Apply OpenTofu Configuration to Create Kind Cluster
       - name: Apply OpenTofu
         run: |
@@ -54,6 +61,7 @@ jobs:
       # Step 8: Check for kind nodes 
       - name: Check for kind nodes 
         run: |
+          export KUBECONFIG=$(pwd)/kubeconfig_example
           kubectl get nodes -o wide 
 
       # Step 9: Deploy Sample Application to Kind Cluster
