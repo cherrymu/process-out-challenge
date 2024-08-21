@@ -96,7 +96,7 @@ After building the application from the CI pipeline, deploy it manually using he
 
 
 ## Areas for Future Improvement
-- Use an ingress gateway like Istio to route the traffic inside the cluster securely with more granularity and access control for the backend services with claims and policies.
-- Use ArgoCD/Flux to deploy and manage applications more efficiently
-- Extend OpenTofu configuration to automate installation of pre-requisites tools.
-- Use [sigstore policy controller](https://github.com/sigstore/policy-controller) to enforce a strict image policy such that only signed and verified images will be allowed to deploy in a namespace and other images will be rejected by the admission webhook controller.
+1. Use an ingress gateway like Istio to route the traffic inside the cluster securely with more granularity and access control for the backend services with claims and policies.
+2. Use ArgoCD/Flux to deploy and manage applications more efficiently
+3. Extend OpenTofu configuration to automate installation of pre-requisites tools.
+4. Use [sigstore policy controller](https://github.com/sigstore/policy-controller) to enforce a strict image policy such that only signed and verified images will be allowed to deploy in a namespace and other images will be rejected by the admission webhook controller.
