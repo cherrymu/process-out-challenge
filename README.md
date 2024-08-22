@@ -1,9 +1,6 @@
 # Go Http Web Server
 A simple http web server written in `Golang` exposing application metrics as a microservice. This project is built on the basic DevOps principles like building images securely through CI mechanism which includes signing of images, scanning for vulnerabilities and also does a continuous deployment test on every push and pull request. The application can be deployed easily on your kubernetes cluster using helm chart. 
 
-![Build Status](https://github.com/cherrymu/process-out-challenge/actions/workflows/ci.yml/badge.svg)
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-
 ## Pre-requisites for installation
 
 - [Docker](https://docs.docker.com/desktop/)
