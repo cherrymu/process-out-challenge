@@ -1,38 +1,43 @@
 # Go Http Web Server
 A simple http web server written in `Golang` exposing application metrics as a microservice. This project is built on the basic DevOps principles like building images securely through CI mechanism which includes signing of images, scanning for vulnerabilities and also does a continuous deployment test on every push and pull request. The application can be deployed easily on your kubernetes cluster using helm chart. 
 
-## Pre-requisites for installation
+## Pre-requisites for installation on Linux Machines
 
 - [Docker](https://docs.docker.com/desktop/)
 - [KIND](https://kind.sigs.k8s.io/)
-- [OpenTofu CLI](https://opentofu.org/docs/intro/install/)
+- [OpenTofu](https://opentofu.org/docs/intro/install/)
+- [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
 - [Helm](https://helm.sh)
 - [Cosign](https://docs.sigstore.dev/cosign/installation)
 
-## Setup Quick KIND environment using OpenTofu
+## Setup tools and environment using OpenTofu
 1. Clone this repo in your local laptop 
 ```bash
 git clone https://github.com/cherrymu/process-out-challenge.git
 ```
-2. switch directory into environments/local-dev
+2. Install all the necessary cli tools using makescript. Before running the makefile please make sure you have `make` and `unzip` utility installed on your machine
+```bash
+make all 
+```
+3. Switch directory into environments/local-dev
 ```bash
 cd environments/local-dev/
 ```
-3. Initialize OpenTofu
+4. Initialize OpenTofu
 ```bash
 tofu init
 ```
-4. Apply OpenTofu Configuration to Create Kind Cluster
+5. Apply OpenTofu Configuration to Create Kind Cluster
 ```bash
 tofu apply -auto-approve
 ```
-5. Set your `KUBECONFIG` path and check the status of the nodes 
+6. Set your `KUBECONFIG` path and check the status of the nodes 
 ```bash
 export KUBECONFIG=./environments/local-dev/kubeconfig_example
 
 kubectl get nodes -o wide
 ```
-6. Create a namespace for our application deployment and an `imagepull secret` to securely pull a private image from the container registry
+7. Create a namespace for our application deployment and an `imagepull secret` to securely pull a private image from the container registry
 ```bash
 kubectl create ns go-web-app
 
