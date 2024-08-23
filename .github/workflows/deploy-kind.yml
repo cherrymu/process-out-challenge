@@ -1,4 +1,4 @@
-name: Test app Deployment with Kind
+name: Deployment with KIND
 
 on:
   workflow_run:
