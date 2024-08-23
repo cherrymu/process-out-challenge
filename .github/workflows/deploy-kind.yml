@@ -1,4 +1,4 @@
-name: Deployment with KIND
+name: CD with KIND
 
 on:
   workflow_run:
